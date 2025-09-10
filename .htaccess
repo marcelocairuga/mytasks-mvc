@@ -1,0 +1,22 @@
+# Habilita o módulo de reescrita
+RewriteEngine On
+
+# Define a base do projeto para subdiretórios
+# pois estamos usando o XAMPP e o projeto está em /mytasks
+RewriteBase /mytasks/
+
+# Redireciona todas as requisições fora de public para o front-controller
+RewriteCond %{REQUEST_URI} !^/mytasks/public/
+RewriteRule ^(.*)$ public/index.php [L]
+
+# Permite que arquivos estáticos dentro de public sejam acessados diretamente
+# Isso evita o redirecionamento indevido na requisição de arquivos como CSS, JS e imagens
+# se o arquivo realmente existe:
+RewriteCond %{REQUEST_FILENAME} -f [OR] 
+# se o diretório realmente existe:
+RewriteCond %{REQUEST_FILENAME} -d 
+RewriteRule ^ - [L]
+
+# Se a requisição chegou até aqui, significa que a URL não corresponde
+# a um arquivo ou diretório existente, então redireciona para o front-controller
+RewriteRule ^(.*)$ public/index.php [L]
